@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real-Time Note Display</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+
+        #notes {
+            margin-top: 20px;
+            font-size: 24px;
+        }
+
+        button {
+            font-size: 18px;
+            padding: 10px 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Real-Time Note Display (No Audio)</h1>
+    <button onclick="startPlayback()">Start</button>
+    <div id="notes"></div>
+
+    <script>
+        window.onload = function () {
+            let noteData = [];
+
+            // Fetch notes data from the server
+            fetch('/get_notes')
+                .then(response => response.json())
+                .then(data => {
+                    noteData = data;
+                    console.log("Data fetched" , noteData);  // Log data to check the structure
+                });
+
+            const notesContainer = document.getElementById('notes');
+            let index = 0;
+            let startTime = null;
+
+            window.startPlayback = function () {
+                notesContainer.innerHTML = '';
+                index = 0;
+                startTime = performance.now();
+                requestAnimationFrame(showNotes);
+            };
+
+                        function showNotes() {
+                const elapsed = (performance.now() - startTime) / 1000; // seconds
+
+                // If the current time has passed the time for the next note
+                if (index < noteData.length && elapsed >= noteData[index].time) {
+                    // Clear previous note (if any) before displaying the next one
+                    notesContainer.innerHTML = '';  // This ensures only one note is visible at a time
+
+                    // Create a new div to display the current note
+                    const noteDiv = document.createElement('div');
+                    noteDiv.textContent = `At ${noteData[index].time.toFixed(2)}s: ${noteData[index].note}`;
+                    notesContainer.appendChild(noteDiv);
+
+                    index++;  // Move to the next note
+                }
+
+                if (index < noteData.length) {
+                    requestAnimationFrame(showNotes);
+                }
+            }
+        };
+    </script>
+</body>
+
+</html>
