@@ -2,98 +2,127 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>mooscribe</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            padding: 20px;
-        }
-
-        #notes {
-            margin-top: 20px;
-            font-size: 24px;
-        }
-
-        button {
-            font-size: 18px;
-            padding: 10px 20px;
-        }
-
-        input[type="file"] {
-            font-size: 18px;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="static/main.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&display=swap" rel="stylesheet" />
+  <title>muscribe</title>
 </head>
 
 <body>
-    <h1>Upload MIDI File</h1>
+  <div class="top-bar">
+    <div class="title" id="greeting">muscribe . ₊ ⊹ . ₊˖ . ₊</div>
+    <div class="button-container">
+      <a id="mini-button" class="mini-button">
+        <img src="static/minimize-button.png" id="minimizeIcon" />
+      </a>
+      <a id="close-button" class="close-button">
+        <img src="static/exit-button.png" id="closeIcon" />
+      </a>
+    </div>
+  </div>
 
-    <form id="uploadForm" enctype="multipart/form-data">
-        <input type="file" id="file" name="file" accept=".midi, .mid" required />
-        <button type="submit">Upload MIDI</button>
-    </form>
-
-    <button onclick="startPlayback()">Start</button>
+  <div class="content">
+    <button class="start-btn" onclick="startPlayback()">start</button>
+    <div class="frog">
+        <img src="static/froggy.gif" class="frame frame1" />
+    </div>
     <div id="notes"></div>
 
-    <script>
-        let noteData = [];
-        const notesContainer = document.getElementById("notes");
-        let index = 0;
-        let startTime = null;
+    <div class="upload-box">
+      <form id="uploadForm" enctype="multipart/form-data">
+        <label for="file" class="custom-file-label">
+          <img src="static/add-file.png" alt="Upload" class="upload-icon" />
+          <span id="file-name">add midi file</span>
+        </label>
+        <input type="file" id="file" name="file" accept=".midi, .mid" required hidden />
+      </form>
+    </div>
+  </div>
 
-        document.getElementById('uploadForm').addEventListener('submit', function (event) {
-            event.preventDefault();
+  <script>
+    let noteData = [];
+    const notesContainer = document.getElementById("notes");
+    let index = 0;
+    let startTime = null;
 
-            const formData = new FormData();
-            formData.append('file', document.getElementById('file').files[0]);
+    document.getElementById("file").addEventListener("change", function () {
+      const fileInput = this;
+      const fileNameDisplay = document.getElementById("file-name");
 
-            fetch('/upload', {
-                method: 'POST',
-                body: formData
-            })
-                .then((response) => response.json())
-                .then((data) => {
-                    if (data.error) {
-                        alert('Error: ' + data.error);
-                    } else {
-                        noteData = data;
-                        console.log("Notes fetched:", noteData);
-                    }
-                })
-                .catch((error) => {
-                    console.error("Error uploading file:", error);
-                });
-        });
+      if (fileInput.files.length > 0) {
+        const fileName = fileInput.files[0].name;
+        fileNameDisplay.textContent = fileName;
 
-        window.startPlayback = function () {
-            notesContainer.innerHTML = "";
-            index = 0;
-            startTime = performance.now();
-            requestAnimationFrame(showNotes);
-        };
+        const formData = new FormData();
+        formData.append("file", fileInput.files[0]);
 
-        function showNotes() {
-            const elapsed = (performance.now() - startTime) / 1000;
-
-            if (index < noteData.length && elapsed >= noteData[index].time) {
-                notesContainer.innerHTML = "";
-
-                const noteDiv = document.createElement("div");
-                noteDiv.textContent = `At ${noteData[index].time.toFixed(2)}s: ${noteData[index].note
-                    }`;
-                notesContainer.appendChild(noteDiv);
-
-                index++;
+        fetch("/upload", {
+          method: "POST",
+          body: formData,
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.error) {
+              alert("Error: " + data.error);
+            } else {
+              noteData = data;
+              console.log("Notes fetched:", noteData);
             }
+          })
+          .catch((error) => {
+            console.error("Error uploading file:", error);
+          });
+      }
+    });
 
-            if (index < noteData.length) {
-                requestAnimationFrame(showNotes);
-            }
-        }
-    </script>
+    window.startPlayback = function () {
+      notesContainer.innerHTML = "";
+      index = 0;
+      startTime = performance.now();
+      requestAnimationFrame(showNotes);
+    };
+
+  function showNotes() {
+    const elapsed = (performance.now() - startTime) / 1000;
+
+    if (index < noteData.length && elapsed >= noteData[index].time) {
+      // Clear previous notes
+      notesContainer.innerHTML = "";
+
+      // Create a new note div
+      const noteDiv = document.createElement("div");
+      noteDiv.textContent = `${noteData[index].note}`;
+      notesContainer.appendChild(noteDiv);
+
+      // Add the pulsing animation class to the note div
+      noteDiv.classList.add("pulsing");
+
+      // Remove the pulsing class after the animation completes
+      setTimeout(() => {
+        noteDiv.classList.remove("pulsing");
+      }, 800); // match the duration of the pulse animation
+
+      index++;
+    }
+
+    // Continue showing notes if there are more
+    if (index < noteData.length) {
+      requestAnimationFrame(showNotes);
+    }
+  }
+
+
+    document.getElementById("close-button").addEventListener("click", () => {
+      window.electronAPI.close();
+    });
+
+    document.getElementById("mini-button").addEventListener("click", () => {
+      window.electronAPI.minimize();
+    });
+  </script>
 </body>
 
 </html>

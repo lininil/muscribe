@@ -1,0 +1,171 @@
+:root {
+    --dark-green: #607562;
+    --light-green: #8AA18C;
+    --black-green: #2E3B2F;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Pixelify Sans", sans-serif;
+    font-style: normal;
+    height: 100vh;
+}
+
+.top-bar {
+    background-color: var(--dark-green);
+    -webkit-app-region: drag;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    color: white;
+    font-size: 1rem;
+    height: 50px;
+}
+
+.close-button,
+.mini-button {
+    -webkit-app-region: no-drag;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    display: inline-flex;
+    transition-duration: 0.4s;
+}
+
+.close-button img,
+.mini-button img {
+    width: 25px;
+    height: auto;
+}
+
+.mini-button:hover,
+.close-button:hover {
+    scale: 110%;
+}
+
+.content {
+    margin-top: 50px;
+    padding: 1rem;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    width: 100%;
+}
+
+#notes {
+    margin-top: 10px;
+        font-size: 3rem;
+        color: white;
+        background-color: var(--light-green);
+        border: 5px solid var(--black-green);
+        border-radius: 10px;
+        padding: 15px;
+        width: 400px;
+        height: 100px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        margin-top: 0;
+        image-rendering: pixelated;
+}
+
+button {
+    font-family: "Pixelify Sans", sans-serif;
+    background-color: var(--light-green);
+    color: var(--black-green);
+    padding: 0.25rem 1.5rem;
+    border: 2px solid var(--black-green);
+    border-radius: 5px;
+    cursor: pointer;
+    transition-duration: 0.4s;
+    margin: 2rem;
+}
+
+.start-btn:hover {
+    background-color: white;
+    
+}
+
+.frog img{
+    image-rendering: pixelated;
+    width: 160px;
+    margin-bottom: 0;
+    display: block;
+    height: auto;
+}
+
+.frog {
+    margin-bottom: 0;
+}
+
+.upload-box {
+    border: 5px dashed var(--dark-green);
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    margin: 1rem auto;
+    justify-content: center;
+    width: 400px;
+}
+
+#uploadForm {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+.custom-file-label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    padding: 1rem;
+    border-radius: 8px;
+    color: var(--light-green);
+    font-family: 'Pixelify Sans', sans-serif;
+}
+
+.upload-icon {
+    width: 41px;
+}
+.upload-icon img{
+    width: 41px;
+    height: auto;
+    image-rendering: pixelated;
+}
+
+#file-name {
+    font-size: 1rem;
+}
+
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.1);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+.pulsing {
+    animation: pulse 0.8s ease-in-out;
+}
