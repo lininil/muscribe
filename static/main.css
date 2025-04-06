@@ -89,7 +89,8 @@ button {
     border-radius: 10px;
     cursor: pointer;
     transition-duration: 0.4s;
-    margin: 2rem;
+    margin: 0;
+    margin-bottom: 2rem;
 }
 
 .start-btn:hover {
@@ -125,6 +126,8 @@ button {
     justify-content: center;
     width: 400px;
     transition-duration: 0.4s;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
 }
 
 #uploadForm {

@@ -116,12 +116,20 @@
 
 
     document.getElementById("close-button").addEventListener("click", () => {
-      window.electronAPI.close();
-    });
+        if (window.electronAPI && window.electronAPI.close) {
+          window.electronAPI.close();
+        } else {
+          console.error("electronAPI.close is not defined");
+        }
+      });
 
-    document.getElementById("mini-button").addEventListener("click", () => {
-      window.electronAPI.minimize();
-    });
+      document.getElementById("mini-button").addEventListener("click", () => {
+        if (window.electronAPI && window.electronAPI.minimize) {
+          window.electronAPI.minimize();
+        } else {
+          console.error("electronAPI.minimize is not defined");
+        }
+      });
   </script>
 </body>
 
