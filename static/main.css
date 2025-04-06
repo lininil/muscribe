@@ -14,6 +14,8 @@ body {
     font-family: "Pixelify Sans", sans-serif;
     font-style: normal;
     height: 100vh;
+    background-image: url('bg.svg');
+    background-size: cover;
 }
 
 .top-bar {
@@ -24,7 +26,7 @@ body {
     align-items: center;
     padding: 0.5rem 1rem;
     color: white;
-    font-size: 1rem;
+    font-size: 1.5rem;
     height: 50px;
 }
 
@@ -83,16 +85,21 @@ button {
     background-color: var(--light-green);
     color: var(--black-green);
     padding: 0.25rem 1.5rem;
-    border: 2px solid var(--black-green);
-    border-radius: 5px;
+    border: 4px solid var(--black-green);
+    border-radius: 10px;
     cursor: pointer;
     transition-duration: 0.4s;
     margin: 2rem;
 }
 
 .start-btn:hover {
-    background-color: white;
+    background-color: rgba(255, 255, 255, 0.5);
+    color: var(--black-green);
     
+}
+
+.start-btn {
+    font-size: 1.5rem;
 }
 
 .frog img{
@@ -117,6 +124,7 @@ button {
     margin: 1rem auto;
     justify-content: center;
     width: 400px;
+    transition-duration: 0.4s;
 }
 
 #uploadForm {
@@ -139,7 +147,8 @@ button {
 }
 
 .upload-icon {
-    width: 41px;
+    width: 30px;
+    image-rendering: pixelated;
 }
 .upload-icon img{
     width: 41px;
@@ -152,13 +161,17 @@ button {
 }
 
 
+.upload-box:hover {
+    background-color: rgba(255, 255, 255, 0.5);
+}
+
 @keyframes pulse {
     0% {
         transform: scale(1);
     }
 
     50% {
-        transform: scale(1.1);
+        transform: scale(1.2);
     }
 
     100% {
@@ -167,5 +180,5 @@ button {
 }
 
 .pulsing {
-    animation: pulse 0.8s ease-in-out;
+    animation: pulse 0.4s ease;
 }
